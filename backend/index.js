@@ -16,23 +16,20 @@ app.use(helmet());
 // Using mongodb module
 const mongoose = require("mongoose");
 
-const {dbConnect}=require('./models/connection');
+const { dbConnect } = require("./models/connection");
 
-const mongoDB = process.env.MONGODB_URL;
-const PORT=process.env.PORT;
+const mongoDb_Url = `${process.env.MONGODB_URL}/Zomato`;
+const PORT = process.env.PORT;
 dbConnect(mongoDb_Url)
-.then(()=>{
-  console.log('Database connection is complete');
-  app.listen(PORT,()=>{
-    console.log(`Server is running on port ${PORT}`);
+  .then(() => {
+    console.log("Database connection is complete");
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
   })
-
-})
-.catch((err)=>{
-  console.log(err);
-})
-
-
+  .catch((err) => {
+    console.log(err);
+  });
 
 app.get("/", (req, res) => {
   return res.json("Welcome to the zomato application");
