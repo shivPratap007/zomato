@@ -13,6 +13,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 
+
+// Auth route
+const authRoute=require('./controllers/Auth');
+app.use('/auth',authRoute);
+
 // Using mongodb module
 const mongoose = require("mongoose");
 
