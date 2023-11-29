@@ -1,7 +1,9 @@
 require("dotenv").config();
+
 require("@babel/core").transform("code", {
   presets: ["@babel/preset-env"],
 });
+
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
@@ -14,8 +16,23 @@ app.use(helmet());
 // Using mongodb module
 const mongoose = require("mongoose");
 
+const {dbConnect}=require('./models/connection');
+
 const mongoDB = process.env.MONGODB_URL;
-mongoose.connect(mongoDB).then(() => console.log("Connected to the database"));
+const PORT=process.env.PORT;
+dbConnect(mongoDb_Url)
+.then(()=>{
+  console.log('Database connection is complete');
+  app.listen(PORT,()=>{
+    console.log(`Server is running on port ${PORT}`);
+  })
+
+})
+.catch((err)=>{
+  console.log(err);
+})
+
+
 
 app.get("/", (req, res) => {
   return res.json("Welcome to the zomato application");
