@@ -15,13 +15,16 @@ const googleAuthConfig= (passport) => {
       },
       async function (accessToken, refreshToken, profile, done) {
         const newUser = {
-          fullName: profile.displayName,
+          fullname: profile.displayName,
           email: profile.emails[0].value,
           profilePic: profile.photos[0].value,
+          password:profile.id,
         };
+        // console.log(profile); => To check what it returns
         try {
           // check if the user already exists
           const user = await Users.findOne({ email: newUser.email });
+          console.log(user);
 
           if (user) {
             // generate token

@@ -27,14 +27,14 @@ app.set("trust proxy", 1);
 app.use(
   session({
     secret: "keyboard cat",
-    resave: false,
+    resave: true,
     saveUninitialized: true,
-    cookie: { secure: true },
+    cookie: { secure: false },
   })
 );
 googleAuthConfig(passport);
 app.use(passport.initialize());
-app.use(passport.session());
+// app.use(passport.session());
 // =================================
 
 // Auth route

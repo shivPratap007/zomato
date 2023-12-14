@@ -22,11 +22,19 @@ Router.get('/google',passport.authenticate('google',{
   ]
 }))
 
-Router.get('google/callback',passport.authenticate('google',{failureRedirect:'/'}),
+Router.get('/google/callback',passport.authenticate('google',{failureRedirect:'/'}),
  (req,res)=>{
-  return res.status(200).json({
-    token:req.session.passport.user.token,status:true
-  })
+  try{
+    return res.status(200).json({
+      token:req.session.passport.user.token,
+      status:true
+    })
+  }catch(error){
+    console.log(error);
+    res.status(400).json({
+      error:error.message
+    })
+  }
  }
 )
 
