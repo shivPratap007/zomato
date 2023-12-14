@@ -4,19 +4,42 @@ require("@babel/core").transform("code", {
   presets: ["@babel/preset-env"],
 });
 
+// ===============================================================
+// google authentication config
+const { googleAuthConfig } = require("./config/google.config.js");
+// ============================================================
+
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
+// =====================================
+const passport = require("passport");
+// ======================================
 const app = express();
+const session = require("express-session");
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
-
+// ===================================
+// middleware to use google auth
+app.set("trust proxy", 1);
+app.use(
+  session({
+    secret: "keyboard cat",
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: true },
+  })
+);
+googleAuthConfig(passport);
+app.use(passport.initialize());
+app.use(passport.session());
+// =================================
 
 // Auth route
-const authRoute=require('./controllers/Auth');
-app.use('/auth',authRoute);
+const authRoute = require("./controllers/Auth");
+app.use("/auth", authRoute);
 
 // Using mongodb module
 const mongoose = require("mongoose");

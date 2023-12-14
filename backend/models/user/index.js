@@ -41,8 +41,13 @@ userSchema.pre('save',async function(next){
 
 userSchema.methods.generateJwtTokens=function(){
     return jwt.sign({
-        data:this._id,
+        data:this._id.toString(),
     },process.env.SECRET_KEY);
+}
+
+userSchema.methods.comparePasswords=async function({passoword}){
+    let response=await bcrypt.compare(passoword, this.passoword);
+    return response; // bcrypt.compare returns true or false only
 }
 
 const Users=mongoose.model("Users",userSchema);
